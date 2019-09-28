@@ -1,14 +1,14 @@
 package co.syalar.sfgpetclinic.services.map;
 
 import co.syalar.sfgpetclinic.model.Pet;
-import co.syalar.sfgpetclinic.services.CrudService;
+import co.syalar.sfgpetclinic.services.PetService;
 
 import java.util.Set;
 
 /**
  * Created by jd.rodriguez
  */
-public class PetServiceMap extends AbstractMapService<Pet, Long> implements CrudService<Pet, Long> {
+public class PetServiceMap extends AbstractMapService<Pet, Long> implements PetService {
     @Override
     public Set<Pet> findAll() {
         return super.findAll();
