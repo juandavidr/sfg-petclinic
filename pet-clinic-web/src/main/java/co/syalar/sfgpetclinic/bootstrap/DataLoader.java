@@ -41,7 +41,7 @@ public class DataLoader implements CommandLineRunner {
         owner2.setFirstName("Fiona");
         owner2.setLastName("Gleganne");
         ownerService.save(owner2);
-        System.out.println("Loaded owners...");
+        System.out.println("Loaded owners..." + ownerService.findAll().size());
 
         Vet vet1 = new Vet();
         vet1.setId(1L);
@@ -54,6 +54,6 @@ public class DataLoader implements CommandLineRunner {
         vet2.setFirstName("Jessie");
         vet2.setLastName("Porter");
         vetService.save(vet2);
-        System.out.println("Loaded vets...");
+        System.out.println("Loaded vets..." + vetService.findAll().size());
     }
 }
