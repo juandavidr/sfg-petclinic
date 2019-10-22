@@ -1,6 +1,7 @@
 package co.syalar.sfgpetclinic.services.map;
 
 import co.syalar.sfgpetclinic.model.Owner;
+import co.syalar.sfgpetclinic.model.Pet;
 import co.syalar.sfgpetclinic.services.OwnerService;
 import co.syalar.sfgpetclinic.services.PetService;
 import co.syalar.sfgpetclinic.services.PetTypeService;
@@ -23,11 +24,6 @@ public class OwnerServiceMap extends AbstractMapService<Owner, Long> implements 
         this.petService = petService;
     }
 
-    public OwnerServiceMap() {
-        petService = new PetServiceMap();
-        petTypeService = new PetTypeServiceMap();
-    }
-
     @Override
     public Set<Owner> findAll() {
         return super.findAll();
@@ -41,15 +37,19 @@ public class OwnerServiceMap extends AbstractMapService<Owner, Long> implements 
     @Override
     public Owner save(Owner object) {
         if (object != null) {
-            if (object.getPets() != null) {
-                object.getPets().forEach(pet -> {
-                    if (pet.getPetType() != null) {
-                        pet.setPetType(petTypeService.save(pet.getPetType()));
-                    } else {
-                        throw new RuntimeException("Pet Type is required");
-                    }
-                });
-            }
+
+            object.getPets().forEach(pet -> {
+                if (pet.getPetType() != null) {
+                    pet.setPetType(petTypeService.save(pet.getPetType()));
+                } else {
+                    throw new RuntimeException("Pet Type is required");
+                }
+                if (pet.getId() == null) {
+                    Pet savedPet = petService.save(pet);
+                    pet.setId(savedPet.getId());
+                }
+            });
+
             return super.save(object);
         } else {
             return null;

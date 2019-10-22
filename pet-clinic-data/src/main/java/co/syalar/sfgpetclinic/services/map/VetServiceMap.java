@@ -1,7 +1,9 @@
 package co.syalar.sfgpetclinic.services.map;
 
 import co.syalar.sfgpetclinic.model.Vet;
+import co.syalar.sfgpetclinic.services.SpecialtyService;
 import co.syalar.sfgpetclinic.services.VetService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -11,6 +13,13 @@ import java.util.Set;
  */
 @Service
 public class VetServiceMap extends AbstractMapService<Vet, Long> implements VetService {
+    private SpecialtyService specialtyService;
+
+    @Autowired
+    public VetServiceMap(SpecialtyService specialtyService) {
+        this.specialtyService = specialtyService;
+    }
+
     @Override
     public Set<Vet> findAll() {
         return super.findAll();
@@ -23,7 +32,16 @@ public class VetServiceMap extends AbstractMapService<Vet, Long> implements VetS
 
     @Override
     public Vet save(Vet object) {
-        return super.save(object);
+        if (object != null) {
+            object.getSpecialties().forEach(specialty -> {
+                if (specialty.getId() == null) {
+                    specialty.setId(specialtyService.save(specialty).getId());
+                }
+            });
+            return super.save(object);
+        } else {
+            return null;
+        }
     }
 
     @Override

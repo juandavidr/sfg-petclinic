@@ -5,5 +5,5 @@ import co.syalar.sfgpetclinic.model.Specialty;
 /**
  * Created by jd.rodriguez
  */
-public interface SpecialtiesService extends CrudService<Specialty, Long> {
+public interface SpecialtyService extends CrudService<Specialty, Long> {
 }
