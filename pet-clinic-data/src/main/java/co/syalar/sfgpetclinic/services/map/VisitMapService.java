@@ -4,6 +4,7 @@ import co.syalar.sfgpetclinic.model.Visit;
 import co.syalar.sfgpetclinic.services.PetService;
 import co.syalar.sfgpetclinic.services.VisitService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -12,6 +13,7 @@ import java.util.Set;
  * Created by jd.rodriguez
  */
 @Service
+@Profile({ "default", "map" })
 public class VisitMapService extends AbstractMapService<Visit, Long> implements VisitService {
     private PetService petService;
 
