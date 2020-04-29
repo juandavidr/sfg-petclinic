@@ -7,12 +7,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.util.Map;
 import java.util.Set;
 
@@ -22,6 +20,7 @@ import java.util.Set;
 @RequestMapping("/owners")
 @Controller
 public class OwnerController {
+    private static final String VIEWS_ORDER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
     private final OwnerService ownerService;
 
     @Autowired
@@ -30,19 +29,13 @@ public class OwnerController {
     }
 
     @InitBinder
-    public void setAllowdFields(WebDataBinder dataBinder) {
+    public void setAllowedFields(WebDataBinder dataBinder) {
         dataBinder.setDisallowedFields("id");
     }
 
-    @GetMapping("/owners/find")
+    @GetMapping("/find")
     public String initFindForm(Map<String, Object> model) {
         model.put("owner", new Owner());
-        return "owners/findOwners";
-    }
-
-    @RequestMapping({ "/find" })
-    public String findOwners(Model model) {
-        model.addAttribute("owner", Owner.builder().build());
         return "owners/findOwners";
     }
 
@@ -65,9 +58,47 @@ public class OwnerController {
     }
 
     @GetMapping("/{ownerId}")
-    public ModelAndView showOwner(@PathVariable("ownerId") Long ownerId) {
+    public ModelAndView showOwner(@PathVariable Long ownerId) {
         ModelAndView mav = new ModelAndView("owners/ownerDetails");
-        mav.addObject(ownerService.findById(ownerId));
+        mav.addObject("owner", ownerService.findById(ownerId));
         return mav;
     }
+
+    @GetMapping("/new")
+    public ModelAndView newOwner() {
+        ModelAndView mav = new ModelAndView(VIEWS_ORDER_CREATE_OR_UPDATE_FORM);
+        mav.addObject("owner", Owner.builder().build());
+        return mav;
+    }
+
+    @GetMapping("/{ownerId}/edit")
+    public ModelAndView editOwner(@PathVariable Long ownerId) {
+        ModelAndView mav = new ModelAndView(VIEWS_ORDER_CREATE_OR_UPDATE_FORM);
+        mav.addObject("owner", ownerService.findById(ownerId));
+        return mav;
+    }
+
+    @PostMapping("/{ownerId}/edit")
+    public String editOwner(@PathVariable Long ownerId, Owner owner, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            return VIEWS_ORDER_CREATE_OR_UPDATE_FORM;
+        } else {
+            if (owner.getId() == null || owner.getId() == 0l) {
+                owner.setId(ownerId);
+            }
+            Owner savedOwner = ownerService.save(owner);
+            return "redirect:/owners/" + savedOwner.getId().toString();
+        }
+    }
+
+    @PostMapping("/new")
+    public String createOwner(@Valid Owner owner, BindingResult result) {
+        if (result.hasErrors()) {
+            return VIEWS_ORDER_CREATE_OR_UPDATE_FORM;
+        } else {
+            Owner savedOwner = ownerService.save(owner);
+            return "redirect:/owners/" + savedOwner.getId().toString();
+        }
+    }
+
 }
