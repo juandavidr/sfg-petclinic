@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by jd.rodriguez
@@ -74,5 +75,13 @@ public class OwnerMapService extends AbstractMapService<Owner, Long> implements 
                 .stream()
                 .filter(owner -> owner.getLastName().equalsIgnoreCase(lastName)).findFirst()
                 .orElse(null);
+    }
+
+    @Override
+    public Set<Owner> findAllByLastNameLike(String lastName) {
+        return this.findAll()
+                .stream()
+                .filter(owner -> owner.getLastName().contains(lastName)).
+                        collect(Collectors.toSet());
     }
 }

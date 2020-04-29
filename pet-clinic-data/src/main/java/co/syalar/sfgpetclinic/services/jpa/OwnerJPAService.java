@@ -34,6 +34,10 @@ public class OwnerJPAService implements OwnerService {
         return ownerRepository.findByLastName(lastName);
     }
 
+    @Override public Set<Owner> findAllByLastNameLike(String lastName) {
+        return ownerRepository.findByLastNameContainsIgnoreCase(lastName);
+    }
+
     @Override
     public Set<Owner> findAll() {
         Set<Owner> owners = new HashSet<>();
