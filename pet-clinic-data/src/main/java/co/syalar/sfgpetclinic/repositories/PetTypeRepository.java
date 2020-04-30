@@ -7,4 +7,6 @@ import org.springframework.data.repository.CrudRepository;
  * Created by jd.rodriguez
  */
 public interface PetTypeRepository extends CrudRepository<PetType, Long> {
+
+    PetType findByNameIgnoreCase(String name);
 }

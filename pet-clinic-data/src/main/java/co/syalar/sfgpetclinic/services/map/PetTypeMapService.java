@@ -25,7 +25,7 @@ public class PetTypeMapService extends AbstractMapService<PetType, Long> impleme
 
     @Override
     public PetType save(PetType object) {
-        return super.save( object);
+        return super.save(object);
     }
 
     @Override
@@ -36,5 +36,13 @@ public class PetTypeMapService extends AbstractMapService<PetType, Long> impleme
     @Override
     public PetType findById(Long id) {
         return super.findById(id);
+    }
+
+    @Override public PetType findByName(String name) {
+        return map.values()
+                .stream()
+                .filter(petType -> name.equals(petType.getName()))
+                .findAny()
+                .orElse(null);
     }
 }

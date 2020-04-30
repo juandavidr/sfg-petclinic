@@ -20,7 +20,7 @@ import java.util.Set;
 @RequestMapping("/owners")
 @Controller
 public class OwnerController {
-    private static final String VIEWS_ORDER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
+    private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
     private final OwnerService ownerService;
 
     @Autowired
@@ -66,14 +66,14 @@ public class OwnerController {
 
     @GetMapping("/new")
     public ModelAndView newOwner() {
-        ModelAndView mav = new ModelAndView(VIEWS_ORDER_CREATE_OR_UPDATE_FORM);
+        ModelAndView mav = new ModelAndView(VIEWS_OWNER_CREATE_OR_UPDATE_FORM);
         mav.addObject("owner", Owner.builder().build());
         return mav;
     }
 
     @GetMapping("/{ownerId}/edit")
     public ModelAndView editOwner(@PathVariable Long ownerId) {
-        ModelAndView mav = new ModelAndView(VIEWS_ORDER_CREATE_OR_UPDATE_FORM);
+        ModelAndView mav = new ModelAndView(VIEWS_OWNER_CREATE_OR_UPDATE_FORM);
         mav.addObject("owner", ownerService.findById(ownerId));
         return mav;
     }
@@ -81,7 +81,7 @@ public class OwnerController {
     @PostMapping("/{ownerId}/edit")
     public String editOwner(@PathVariable Long ownerId, Owner owner, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            return VIEWS_ORDER_CREATE_OR_UPDATE_FORM;
+            return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
         } else {
             if (owner.getId() == null || owner.getId() == 0l) {
                 owner.setId(ownerId);
@@ -94,7 +94,7 @@ public class OwnerController {
     @PostMapping("/new")
     public String createOwner(@Valid Owner owner, BindingResult result) {
         if (result.hasErrors()) {
-            return VIEWS_ORDER_CREATE_OR_UPDATE_FORM;
+            return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
         } else {
             Owner savedOwner = ownerService.save(owner);
             return "redirect:/owners/" + savedOwner.getId().toString();
