@@ -6,7 +6,6 @@ import co.syalar.sfgpetclinic.model.PetType;
 import co.syalar.sfgpetclinic.services.OwnerService;
 import co.syalar.sfgpetclinic.services.PetService;
 import co.syalar.sfgpetclinic.services.PetTypeService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -25,11 +24,10 @@ import java.util.Collection;
 @Controller
 public class PetController {
     private static final String VIEWS_PET_CREATE_OR_UPDATE_FORM = "pets/createOrUpdatePetForm";
-    private PetTypeService petTypeService;
-    private PetService petService;
-    private OwnerService ownerService;
+    private final PetTypeService petTypeService;
+    private final PetService petService;
+    private final OwnerService ownerService;
 
-    @Autowired
     public PetController(PetTypeService petTypeService, PetService petService,
             OwnerService ownerService) {
         this.petTypeService = petTypeService;
