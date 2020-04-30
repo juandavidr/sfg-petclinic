@@ -48,15 +48,15 @@ public class DataLoader implements CommandLineRunner {
         System.out.println("Loaded pettypes..." + petTypeService.findAll().size());
 
         Specialty radiology = new Specialty();
-        radiology.setDescription("radiology");
+        radiology.setDescription("Radiology");
         Specialty savedRadiology = specialtyService.save(radiology);
 
         Specialty surgery = new Specialty();
-        surgery.setDescription("'surgery'");
+        surgery.setDescription("Surgery");
         Specialty savedSurgery = specialtyService.save(surgery);
 
         Specialty dentistry = new Specialty();
-        dentistry.setDescription("dentistry");
+        dentistry.setDescription("Dentistry");
         Specialty savedDentistry = specialtyService.save(dentistry);
 
         System.out.println("Loaded specialties.... " + specialtyService.findAll().size());
