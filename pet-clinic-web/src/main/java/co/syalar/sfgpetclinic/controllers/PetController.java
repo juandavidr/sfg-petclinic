@@ -70,7 +70,6 @@ public class PetController {
         if (result.hasErrors()) {
             return VIEWS_PET_CREATE_OR_UPDATE_FORM;
         } else {
-            pet.setPetType(petTypeService.findByName(pet.getPetType().getName()));
             owner.getPets().add(pet);
             pet.setOwner(owner);
             petService.save(pet);
@@ -92,8 +91,6 @@ public class PetController {
             return VIEWS_PET_CREATE_OR_UPDATE_FORM;
         } else {
             pet.setId(petId);
-            pet.setPetType(petTypeService.findByName(pet.getPetType().getName()));
-            pet.setOwner(owner);
             petService.save(pet);
             owner.getPets().add(pet);
             return "redirect:/owners/" + owner.getId().toString();
